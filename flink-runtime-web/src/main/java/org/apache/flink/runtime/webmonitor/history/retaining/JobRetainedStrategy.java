@@ -16,18 +16,19 @@
  * limitations under the License.
  */
 
-package org.apache.flink.table.planner.plan.stream.sql;
+package org.apache.flink.runtime.webmonitor.history.retaining;
 
-import org.apache.flink.table.api.TableConfig;
-import org.apache.flink.table.planner.functions.sql.ml.SqlVectorSearchTableFunction;
-import org.apache.flink.table.planner.plan.common.VectorSearchTableFunctionTestBase;
-import org.apache.flink.table.planner.utils.TableTestUtil;
+import org.apache.flink.core.fs.FileStatus;
 
-/** Test for {@link SqlVectorSearchTableFunction}. */
-public class VectorSearchTableFunctionTest extends VectorSearchTableFunctionTestBase {
+/** To define the strategy interface to judge whether the file should be retained. */
+public interface JobRetainedStrategy {
 
-    @Override
-    protected TableTestUtil getUtil() {
-        return streamTestUtil(TableConfig.getDefault());
-    }
+    /**
+     * Judge whether the file should be retained.
+     *
+     * @param file the target file to judge.
+     * @param fileOrderedIndex the specified order index position of the target file,
+     * @return The result that indicates whether the file should be retained.
+     */
+    boolean shouldRetain(FileStatus file, int fileOrderedIndex);
 }
